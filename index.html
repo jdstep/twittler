@@ -1,27 +1,103 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link href="styles.css" rel="stylesheet" type="text/css">
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
   </head>
-  <body>
-    <script>
+  <header>
+  <h1>Some awesome tweets</h1>
+  <h3 id="homeLink">Go back home</h3>
+  </header>
+  <div class="group">
+    <aside>
+      <div id="loadTweetsButton">
+        <button>Get more tweets</button>
+      </div>
+    </aside>
+    <section id="tweetSection">
+     <script>
+       $(document).ready(function(){
+         var $section = $('section');
 
-      $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+         // keeps track of the last tweet loaded to prevent duplicate tweets
+         var lastTweetLoaded = 0;
+         var viewingUsername;
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+         var getTweets = function (username, firstCall) {
+           var index = lastTweetLoaded;
+           console.log(username);
+           viewingUsername = username;
 
-      });
 
-    </script>
-  </body>
+           if (firstCall) {
+            $("#tweetSection").html('');
+            index = 0;
+           }
+
+           while(index < streams.home.length - 1){
+             var tweet = streams.home[index];
+
+             // if there was a username given then this checks 
+             // if the given username matches the current tweet's username
+             // if not, it skips to the next tweet
+             if (username !== undefined &&
+                 username !== tweet.user) {
+              index += 1;
+              continue;
+             }
+
+            var $tweet = $('<div class="tweets"></div>');
+
+            $tweet.html('<div class="group">' + 
+                          '<div class="avatarBox">' +
+                            '<img src="avatar.png"></img>' + 
+                          '</div>' +
+                          '<div class="messageBox">' + 
+                            '<div class="usernameBox">' + 
+                              '<div class="usernameAt">' + '@' + '</div>' +
+                              '<div class="username">' + tweet.user + '</div>' +
+                            '</div>' +
+                          '<div class="message">' + tweet.message + '</div>' +
+                          '<div class="created_at">' + tweet.created_at + '</div>' + 
+                        '</div>'  
+                        );
+
+            $tweet.prependTo($('#tweetSection'));
+              
+            index += 1;
+           }
+
+           // sets the last tweet loaded to the most recent tweet for the next getTweets() call
+           lastTweetLoaded = streams.home.length - 1;
+
+         };
+
+
+         $(document).ready(getTweets(undefined, true));
+         // window.setInterval(getTweets, 1000);
+
+         // updates tweets when clicking corresponding button
+         $(document).on("click", "#loadTweetsButton", function() {
+           getTweets(viewingUsername, false);
+         });
+
+         // loads a given user's tweets when clicking their username
+         $(document).on("click", ".username", function() {
+          getTweets($(this).html(), true);
+         });
+
+         // goes back to the homepage showing all users' tweets
+         $(document).on("click", "#homeLink", function() {
+          getTweets(undefined, true);
+         });
+
+       });
+     </script>
+    </div>
+    <footer>
+    </footer>
+
+
+  </section>
 </html>

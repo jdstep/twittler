@@ -1,0 +1,80 @@
+aside {
+  float: left;
+  margin: 0 1.5%;
+  width: 10%;
+}
+
+section {
+  float: right;
+  margin: 0 1.5%;
+  width: 80%;
+}
+
+footer {
+  margin-bottom: 0;
+}
+
+.tweets {
+  border: 1px solid black;
+  border-radius: 3px;
+  margin: 5px;
+}
+
+.tweets .group {
+  /*margin-top: 5px;*/
+  width: 60%;
+  margin: 5px;
+}
+
+.avatarBox {
+  float: left;
+  height: 48px;
+}
+
+.messageBox {
+  float: left;
+  margin-left: 5px;
+}
+
+
+
+.usernameBox {
+  /*this display setting makes the username box only as big as contents*/
+  display: inline-block;
+  color: blue;
+}
+
+.usernameAt {
+  float: left;
+}
+.username {
+  float: left;
+}
+
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.group:before,
+.group:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.group:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.group {
+    *zoom: 1;
+}
+
