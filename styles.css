@@ -31,7 +31,6 @@ footer {
 
 .link:hover {
   cursor: pointer;
-  text-decoration: underline;
   color: blue;
 }
 
