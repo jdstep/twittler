@@ -1,29 +1,71 @@
+header, aside, section {
+  font-family: helvetica;
+}
+
+header {
+  text-align: center;
+}
+
 aside {
+  border: 1px solid green;
   float: left;
-  margin: 0 1.5%;
-  width: 10%;
+  width: 25%;
+  padding: 10px;
+  margin-left: 1.5%;
 }
 
 section {
   float: right;
-  margin: 0 1.5%;
-  width: 80%;
+  margin-right: 10%;
+  width: 60%;
 }
 
 footer {
   margin-bottom: 0;
 }
 
-.tweets {
-  border: 1px solid black;
-  border-radius: 3px;
+/* properties for all */
+.coolShadow {
+  box-shadow: 0 2px 1px #777;
+}
+
+/* aside */
+.userBox {
+  border: 1px solid purple;
+  height: 30px;
   margin: 5px;
 }
 
+.atInUserBox {
+  float: left;
+}
+
+.usernameInUserBox {
+  float: left;
+}
+
+.usernameBoxAll {
+  text-align: center;
+  /*vertical-align: middle;*/
+  line-height: 30px;
+}
+
+#tweetSubmitButton {
+  margin-top: 5px;
+}
+
+/* tweet section */
+.tweets {
+  border: 1px solid black;
+  border-radius: 3px;
+  margin-bottom: 5px;
+}
+
+
 .tweets .group {
   /*margin-top: 5px;*/
-  width: 60%;
   margin: 5px;
+  /*margin-right: 50px;*/
 }
 
 .avatarBox {
@@ -50,6 +92,7 @@ footer {
 .username {
   float: left;
 }
+
 
 /**
  * For modern browsers

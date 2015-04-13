@@ -1,40 +1,129 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title>JD's Twittler</title>
     <link href="styles.css" rel="stylesheet" type="text/css">
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="moment.js"></script>
   </head>
   <header>
-  <h1>Some awesome tweets</h1>
-  <h3 id="homeLink">Go back home</h3>
+  <h1 id="homeLink">Twittler</h1>
   </header>
   <div class="group">
     <aside>
       <div id="loadTweetsButton">
-        <button>Get more tweets</button>
+        <button>Load Tweets</button>
+      </div>
+      <h5 id="userListHeader">Users</h5>
+      <div id="userList">
+      </div>
+      <div id="addTweetBox">
+        <h5 id="customTweetHeader">Make a tweet</h5>
+        <div>
+          <input type="text" placeholder="username" id="usernameCustom" />
+        </div>
+        <div>
+          <input type="text" placeholder="what's on your mind?" id="tweetCustom" />
+        </div>
+        <div id="tweetButtonBox">
+          <button id="tweetSubmitButton">Tweet!</button>
+        </div>
       </div>
     </aside>
     <section id="tweetSection">
      <script>
        $(document).ready(function(){
+        //
+        // ASIDE SECTION
+        //
+
+        // USERNAME LIST
+
+        // loads the list of users in the sidebar
+        var loadUserList = function () {
+          var key;
+
+          // iteratively generates a username box for each user
+          for (key in streams.users) {
+            var $user = $('<div class="userBox coolShadow"></div>');
+            $user.html('<div class="usernameBoxAll group">' + 
+                          '<div class="atInUserBox">' + '@' + '</div>' +
+                          '<div class="usernameInUserBox">' + key + '</div>' + 
+                        '</div>');
+            $user.appendTo($('#userList'));
+          }
+
+        };
+
+        $(document).on("click", ".userBox", function() {
+          getTweets($(this).find('.usernameInUserBox').html(), true);
+        });
+
+
+        $(document).ready(loadUserList());
+
+        // SUBMIT TWEET FORM
+
+        // adds a new tweet 
+        $(document).on("click", "#tweetSubmitButton", function(){
+          var tweet = {};
+          var inputtedUser = $('#usernameCustom').val();
+
+          // prevents page refresh
+          event.preventDefault();
+
+          // adds new user to the userlist
+          window.streams.users[inputtedUser] = [];
+          window.users = Object.keys(streams.users);
+
+          // creates object to send to addTweet function in data_generator.js
+          tweet.user = inputtedUser;
+          tweet.message = $('#tweetCustom').val();
+          tweet.created_at = new Date();
+
+          // tweets the message
+          addTweet(tweet);
+
+          // removes added tweet, but retains the given username
+          $('#tweetCustom').val('');
+
+          // removes the custom user from the list of random tweet generator users
+          delete window.streams.users[inputtedUser];
+          window.users = Object.keys(streams.users);
+
+
+        });
+
+
+        //
+        // TWEETS SECTION
+        //
+
          var $section = $('section');
 
          // keeps track of the last tweet loaded to prevent duplicate tweets
          var lastTweetLoaded = 0;
          var viewingUsername;
 
+         // retrieves new tweets
+         // if a username is provided, only the tweets for that username are shown
+         // if no username is provided, all tweets are shown
+         // if firstCall is true, then the page is cleared before showing tweets
+         // if firstcall is false, then the page is not cleared before showing tweets
          var getTweets = function (username, firstCall) {
            var index = lastTweetLoaded;
-           console.log(username);
+
+           // keeps track of which username, if any, is selectively being viewed
            viewingUsername = username;
 
-
+           // resets the page if viewing a username for the first time
            if (firstCall) {
             $("#tweetSection").html('');
             index = 0;
            }
 
+           // generates the HTML for each tweet
            while(index < streams.home.length - 1){
              var tweet = streams.home[index];
 
@@ -47,8 +136,9 @@
               continue;
              }
 
-            var $tweet = $('<div class="tweets"></div>');
+            var $tweet = $('<div class="tweets coolShadow"></div>');
 
+            // generates HTML for the tweet
             $tweet.html('<div class="group">' + 
                           '<div class="avatarBox">' +
                             '<img src="avatar.png"></img>' + 
@@ -59,10 +149,11 @@
                               '<div class="username">' + tweet.user + '</div>' +
                             '</div>' +
                           '<div class="message">' + tweet.message + '</div>' +
-                          '<div class="created_at">' + tweet.created_at + '</div>' + 
+                          '<div class="created_at">' + moment(tweet.created_at).fromNow() + '</div>' + 
                         '</div>'  
                         );
 
+            // adds the tweet to the top of the tweet section
             $tweet.prependTo($('#tweetSection'));
               
             index += 1;
@@ -73,9 +164,13 @@
 
          };
 
-
+         // loads initial set of tweets on page load
          $(document).ready(getTweets(undefined, true));
-         // window.setInterval(getTweets, 1000);
+
+         // automatically refreshes tweets
+         $(document).ready(setInterval(function() {
+          getTweets(viewingUsername, false);
+         }, 2000));
 
          // updates tweets when clicking corresponding button
          $(document).on("click", "#loadTweetsButton", function() {
