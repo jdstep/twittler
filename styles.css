@@ -7,7 +7,7 @@ header {
 }
 
 aside {
-  border: 1px solid green;
+  border: 1px solid black;
   float: left;
   width: 25%;
   padding: 10px;
@@ -29,6 +29,12 @@ footer {
   box-shadow: 0 2px 1px #777;
 }
 
+.link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  color: blue;
+}
+
 /* aside */
 .userBox {
   border: 1px solid purple;
@@ -46,7 +52,6 @@ footer {
 
 .usernameBoxAll {
   text-align: center;
-  /*vertical-align: middle;*/
   line-height: 30px;
 }
 
@@ -63,9 +68,7 @@ footer {
 
 
 .tweets .group {
-  /*margin-top: 5px;*/
   margin: 5px;
-  /*margin-right: 50px;*/
 }
 
 .avatarBox {
@@ -83,7 +86,6 @@ footer {
 .usernameBox {
   /*this display setting makes the username box only as big as contents*/
   display: inline-block;
-  color: blue;
 }
 
 .usernameAt {

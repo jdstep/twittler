@@ -8,13 +8,14 @@
     <script src="moment.js"></script>
   </head>
   <header>
-  <h1 id="homeLink">Twittler</h1>
+  <h1 id="homeLink" class="link">Twittler</h1>
   </header>
   <div class="group">
     <aside>
-      <div id="loadTweetsButton">
+      <!-- Optional button to load tweets -->
+      <!-- <div id="loadTweetsButton">
         <button>Load Tweets</button>
-      </div>
+      </div> -->
       <h5 id="userListHeader">Users</h5>
       <div id="userList">
       </div>
@@ -47,10 +48,10 @@
           // iteratively generates a username box for each user
           for (key in streams.users) {
             var $user = $('<div class="userBox coolShadow"></div>');
-            $user.html('<div class="usernameBoxAll group">' + 
+            $user.html('<div class="usernameBoxAll group link lin">' + 
                           '<div class="atInUserBox">' + '@' + '</div>' +
                           '<div class="usernameInUserBox">' + key + '</div>' + 
-                        '</div>');
+                       '</div>');
             $user.appendTo($('#userList'));
           }
 
@@ -144,7 +145,7 @@
                             '<img src="avatar.png"></img>' + 
                           '</div>' +
                           '<div class="messageBox">' + 
-                            '<div class="usernameBox">' + 
+                            '<div class="usernameBox link">' + 
                               '<div class="usernameAt">' + '@' + '</div>' +
                               '<div class="username">' + tweet.user + '</div>' +
                             '</div>' +
